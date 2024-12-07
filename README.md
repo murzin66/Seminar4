@@ -3,7 +3,9 @@
 
 Существуют различные сценарии использования middleware, как отдельно от middleware, встроенного в redux, так и совместно с ним, рассмотрим оба варианта. 
 
-### Использование только своего middleware
+### Использование кастомного middleware
+
+Для добавления middleware к хранилищу необходимо использовать метод applyMiddleware
 
 ```
 import { createStore, applyMiddleware } from 'redux';
