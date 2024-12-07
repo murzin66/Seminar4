@@ -60,7 +60,7 @@ const store = createStore(
 ```
 
 
-### Комбинация собственного middleware с gefault middleware
+### Комбинация собственного middleware со встроенным в Redux Toolkit middleware
 Помимо middleware, предусмотренного по умолчнию при конфигурции хранилища существует возможность добавить свой middleware, при помощи его добавления к массиву middleware
 ```
 const store = window.RTK.configureStore({
