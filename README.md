@@ -1,7 +1,27 @@
 # Seminar 4
 
+Структура middleware
 
-Существуют различные сценарии использования middleware, как отдельно от middleware, встроенного в redux, так и совместно с ним, рассмотрим оба варианта. 
+```
+const logger = (store) => {
+  return (next) => {
+    return (action) => {
+    };
+  };
+};
+```
+
+<b>Внешняя функция</b>
+
+Эта функция нужна для подключения мидлвары к хранилищу. Она передается в Redux-метод applyMiddleware(). Функция получает на вход объект store, который содержит методы dispatch() и getState() для работы с Redux внутри мидлвары.
+
+<b>Первая вложенная функция</b>
+
+Ее аргументом будет функция next(). Вызов этой функции в теле мидлвары с действием в качестве аргумента может прокидывать действие дальше по цепочке мидлвар. Если функция next() вызвана в последней мидлваре цепочки, то она передает действие в редьюсер и вызывает обновление состояния. Чуть позже мы более подробно это разберем.
+
+<b>Вторая вложенная функция</b>
+
+В качестве аргумента эта функция принимает действие action при его отправке. Мидлвара перехватит любое действие в приложении, отправленное в редьюсер.
 
 ### Использование кастомного middleware
 
@@ -11,7 +31,6 @@
 import { createStore, applyMiddleware } from 'redux';
 
 const logger = (store) => (next) => (action) => {
-  // Код мидлвары
 };
 
 const store = createStore(
@@ -54,3 +73,54 @@ const store = window.RTK.configureStore({
     }).concat(logIt),
 });
 ```
+
+### В каких случаях удобно использовать свой middleware:
+
++ Логирование состояния до вызова action и после
+```
+  const loggerMiddleware = store => next => action => {
+    console.log('Dispatching:', action);
+    const result = next(action);
+    console.log('Next state:', store.getState());
+    return result;
+  };
+```
++ Валидация данных
+```
+const validationMiddleware = store => next => action => {
+if (action.type === 'SUBMIT_FORM' && !action.payload.email) {
+  console.error('Email is required!');
+  return;
+}
+return next(action);
+};
+```
++ Обработка side эффектов
+```  
+const analyticsMiddleware = store => next => action => {
+  if (action.type === 'USER_CLICKED') {
+    sendAnalyticsEvent(action.payload.eventName);
+  }
+  return next(action);
+};
+```
++ Модификация action (изменение payload до reducer либо до следующего middleware)
+```
+const enrichMiddleware = store => next => action => {
+  if (action.type === 'ADD_USER') {
+    const enrichedAction = {
+      ...action,
+      payload: {
+        ...action.payload,
+        timestamp: Date.now(),
+      },
+    };
+    return next(enrichedAction);
+  }
+  return next(action);
+};
+```
+
+
+
+
