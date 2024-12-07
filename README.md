@@ -3,7 +3,7 @@
 
 Существуют различные сценарии использования middleware, как отдельно от middleware, встроенного в redux, так и совместно с ним, рассмотрим оба варианта. 
 
-###Использование только своего middleware
+### Использование только своего middleware
 
 ```
 import { createStore, applyMiddleware } from 'redux';
@@ -39,7 +39,7 @@ const store = createStore(
 ```
 
 
-###Комбинация собственного middleware с gefault middleware
+### Комбинация собственного middleware с gefault middleware
 Помимо middleware, предусмотренного по умолчнию при конфигурции хранилища существует возможность добавить свой middleware, при помощи его добавления к массиву middleware
 ```
 const store = window.RTK.configureStore({
