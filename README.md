@@ -61,7 +61,7 @@ const store = createStore(
 
 
 ### Комбинация собственного middleware со встроенным в Redux Toolkit middleware
-Помимо middleware, предусмотренного по умолчнию при конфигурции хранилища существует возможность добавить свой middleware, при помощи его добавления к массиву middleware
+Помимо middleware, предусмотренного по умолчнию при конфигурции хранилища (в котором в том числе встроен middleware redux-thunk) существует возможность добавить свой middleware, при помощи его добавления к массиву middleware
 ```
 const store = window.RTK.configureStore({
   reducer: updateStore,
@@ -73,6 +73,22 @@ const store = window.RTK.configureStore({
     }).concat(logIt),
 });
 ```
+
+При подключении middleware по умолчанию, существует возможность отключения некоторых встроенных элементов middleware 
+
+```
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: true, // Включить redux-thunk
+      serializableCheck: false, // Отключить проверку сериализуемости
+      immutableCheck: true, // Включить проверку неизменяемости
+    }),
+});
+
+```
+
 
 ### В каких случаях удобно использовать свой middleware:
 
