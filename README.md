@@ -2,7 +2,7 @@
 
 Структура middleware
 
-```
+```js
 const logger = (store) => {
   return (next) => {
     return (action) => {
