@@ -27,7 +27,7 @@ const logger = (store) => {
 
 Для добавления middleware к хранилищу необходимо использовать метод applyMiddleware
 
-```
+```js
 import { createStore, applyMiddleware } from 'redux';
 
 const logger = (store) => (next) => (action) => {
@@ -40,7 +40,7 @@ const store = createStore(
 ```
 При необходимости можно компоновать несколько middleware с помощью метода compose:
 
-```
+```js
 import { createStore, applyMiddleware, compose } from 'redux';
 
 //middleware 1
@@ -62,7 +62,7 @@ const store = createStore(
 
 ### Комбинация собственного middleware со встроенным в Redux Toolkit middleware
 Помимо middleware, предусмотренного по умолчнию при конфигурции хранилища (в котором в том числе встроен middleware redux-thunk) существует возможность добавить свой middleware, при помощи его добавления к массиву middleware
-```
+```js
 const store = window.RTK.configureStore({
   reducer: updateStore,
   middleware: (getDefaultMiddleware) =>
@@ -76,7 +76,7 @@ const store = window.RTK.configureStore({
 
 При подключении middleware по умолчанию, существует возможность отключения некоторых встроенных элементов middleware 
 
-```
+```js
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
@@ -93,7 +93,7 @@ const store = configureStore({
 ### В каких случаях удобно использовать свой middleware:
 
 + Логирование состояния до вызова action и после
-```
+```js
   const loggerMiddleware = store => next => action => {
     console.log('Dispatching:', action);
     const result = next(action);
@@ -102,7 +102,7 @@ const store = configureStore({
   };
 ```
 + Валидация данных
-```
+```js
 const validationMiddleware = store => next => action => {
 if (action.type === 'SUBMIT_FORM' && !action.payload.email) {
   console.error('Email is required!');
@@ -112,7 +112,7 @@ return next(action);
 };
 ```
 + Обработка side эффектов
-```  
+```  js
 const analyticsMiddleware = store => next => action => {
   if (action.type === 'USER_CLICKED') {
     sendAnalyticsEvent(action.payload.eventName);
@@ -121,7 +121,7 @@ const analyticsMiddleware = store => next => action => {
 };
 ```
 + Модификация action (изменение payload до reducer либо до следующего middleware)
-```
+```js
 const enrichMiddleware = store => next => action => {
   if (action.type === 'ADD_USER') {
     const enrichedAction = {
